@@ -14,7 +14,7 @@ require.config({
         backbone: './vendor/backbone',
         'backbone.poller': './vendor/backbone.poller',
         'backbone.paginator': './vendor/backbone.paginator',
-        hbs: './vendor/require-handlebars-plugin/hbs',
+        hbs: './vendor/hbs',
         requireLib: './vendor/require',
         underscore: './vendor/underscore',
         'underscore.string': './vendor/underscore.string',
