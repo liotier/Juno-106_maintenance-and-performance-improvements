@@ -67,6 +67,14 @@ define([
                 this.listenTo(this.patchListener, 'load', this.loadPatch);
                 this.listenTo(this.midiListener, 'message', this.handleMidi);
                 this.listenTo(this.synth, 'change', this.synthUpdateHandler);
+
+                window.addEventListener('message', function(e) {
+                    if (e.origin !== 'https://liotier.github.io') return;
+                    Backbone.Wreqr.radio.channel('midi').vent.trigger('message', e.data);
+                });
+                if (window.opener) {
+                    window.opener.postMessage('juno106:ready', 'https://liotier.github.io');
+                }
             },
             
             onShow: function() {
