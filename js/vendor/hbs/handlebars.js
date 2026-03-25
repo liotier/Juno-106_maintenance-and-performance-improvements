@@ -1,1 +1,1 @@
-define(['../handlebars-v3.0.1'], function(Handlebars) { return Handlebars; });
+define(['../handlebars-v4.7.8'], function(Handlebars) { return Handlebars; });
