@@ -22,7 +22,7 @@ When you've found a sound that you like, click on the `PATCH NAME` text at the t
 
 # MIDI
 
-For MIDI connectivity, you must use a browser that supports the [Web MIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API) — Chrome 43 or newer.
+For MIDI connectivity, you must use a browser that supports the [Web MIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API). Chrome (since v43) and Firefox (since v108) are confirmed to work. Safari does not support Web MIDI.
 
 Every control on the 106.js is mappable to respond to MIDI CC messages, and your MIDI mappings will be remembered when you leave the page. This means that once you've mapped the on-screen controls to your hardware controller, you can play 106.js without touching the mouse and keyboard. If you have multiple MIDI inputs, 106.js will remember all of your mappings separately. 106.js supports both 7-bit and 14-bit MIDI messages. Simply right-click a control to begin mapping.
 
@@ -117,3 +117,4 @@ Juno-106.js was written in Javascript using the [WebAudio](http://webaudio.githu
   * Share URL copy now uses native [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) instead of Flash
   * CDN references upgraded to HTTPS
   * Modernizr deferred to avoid render-blocking
+  * MIDI browser support updated: Firefox v108+ confirmed working; Safari noted as unsupported
