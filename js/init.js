@@ -40,3 +40,16 @@ requirejs.onError = function(err) {
         '<p>Failed modules: ' + (err.requireModules || []).join(', ') + '</p>' +
         '<pre>' + err.stack + '</pre>';
 };
+
+window.onerror = function(msg, src, line, col, err) {
+    document.body.style.background = 'white';
+    document.body.style.color = 'black';
+    document.body.style.fontFamily = 'monospace';
+    document.body.style.padding = '20px';
+    document.body.innerHTML =
+        '<h2>JavaScript Error</h2>' +
+        '<p>' + msg + '</p>' +
+        '<p>at ' + src + ':' + line + ':' + col + '</p>' +
+        '<pre>' + (err && err.stack ? err.stack : '') + '</pre>';
+    return false;
+};
