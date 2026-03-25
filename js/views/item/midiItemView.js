@@ -67,7 +67,7 @@ define([
                         if(access.inputs && access.inputs.size > 0) {
                             that.midi = true;
                             inputs = access.inputs.values();
-                            for (input = inputs.next(); input && !input.done; input = inputs.next()) {
+                            for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
                                 that.inputs.push(input.value);
                             }
                             that.render();
@@ -123,8 +123,6 @@ define([
                 var type = this.getMessageType(e);
                 var update = {};
                 var mapping = this.getModelForMessage(e.data[1]);
-                var MSB;
-                
                 if(type === 'CC') {
                     // If it's a 14-bit MIDI message, we need to get the MSB and LSB
                     if(mapping && mapping.get('LSBController') !== null &&

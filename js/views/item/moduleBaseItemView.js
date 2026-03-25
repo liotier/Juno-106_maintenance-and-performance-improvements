@@ -25,7 +25,6 @@ define([
             
             initialize: function() {
                 var that = this;
-                var multiplier;
 
                 this.dragging = null;
                 this._viewId = _.uniqueId('moduleView');
@@ -178,8 +177,6 @@ define([
             },
             
             setupButtonState: function(el, value) {
-                var data;
-
                 el.toggleClass('pressed', !!value);
                 el.siblings('.led').toggleClass('led--lit', !!value);
                 el.data('value', value);
