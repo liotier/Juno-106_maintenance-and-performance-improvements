@@ -29,3 +29,14 @@ require.config({
         }
     }
 });
+
+requirejs.onError = function(err) {
+    document.body.style.background = 'white';
+    document.body.style.color = 'black';
+    document.body.style.fontFamily = 'monospace';
+    document.body.style.padding = '20px';
+    document.body.innerHTML =
+        '<h2>RequireJS Error: ' + err.requireType + '</h2>' +
+        '<p>Failed modules: ' + (err.requireModules || []).join(', ') + '</p>' +
+        '<pre>' + err.stack + '</pre>';
+};
