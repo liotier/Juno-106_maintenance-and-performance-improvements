@@ -191,6 +191,17 @@ define([
 
     version: '0.5.0',
 
+    // Without normalize, RequireJS 2.3.x appends _unnormalized<N> to all hbs
+    // plugin resource IDs. Inside load.fromText, map.name then becomes e.g.
+    // 'tmpl/shell-tmpl_unnormalized2' while req.exec(text) defines the module
+    // as 'tmpl/shell-tmpl' — the mismatch causes localRequire to look for a
+    // non-existent file and every template times out. Providing normalize tells
+    // RequireJS to use standard path resolution, giving every module a clean,
+    // consistent ID throughout the load cycle.
+    normalize: function (name, normalize) {
+      return normalize(name);
+    },
+
     load: function (name, parentRequire, load, config) {
       //>>excludeStart('excludeHbs', pragmas.excludeHbs)
 
