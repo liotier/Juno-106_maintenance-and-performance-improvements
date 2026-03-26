@@ -138,31 +138,32 @@ define([
                 return bufferSource;
             }
             
-            // Trigger the filter on keypress
+            // Trigger the filter envelope on keypress (RC-like curves)
             this.noteOn = function(initial) {
                 var now = App.context.currentTime;
-                
+
                 if(!initial) {
                     initial = 0;
                     setupEnvelope();
                     setFilter();
                 }
-                
+
                 filterEnvelope.gain.cancelScheduledValues(now);
                 filterEnvelope.gain.setValueAtTime(initial, now);
-                filterEnvelope.gain.linearRampToValueAtTime(1, now + attackLength);
-                filterEnvelope.gain.linearRampToValueAtTime(sustainLevel, now + attackLength + decayLength);
+                // RC-like attack then decay
+                filterEnvelope.gain.setTargetAtTime(1, now, attackLength / 4);
+                filterEnvelope.gain.setTargetAtTime(sustainLevel, now + attackLength, decayLength / 4);
             };
-            
-            // Release the filter on keyup
+
+            // Release the filter envelope on keyup (RC-like discharge)
             this.noteOff = function(initial) {
                 var now = App.context.currentTime;
-                
+
                 initial = initial || filterEnvelope.gain.value;
-        
+
                 filterEnvelope.gain.cancelScheduledValues(now);
                 filterEnvelope.gain.setValueAtTime(initial, now);
-                filterEnvelope.gain.linearRampToValueAtTime(0, now + releaseLength);
+                filterEnvelope.gain.setTargetAtTime(0.0001, now, releaseLength / 4);
             };
             
             this.disconnect = function() {
