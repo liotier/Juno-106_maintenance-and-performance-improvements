@@ -10,7 +10,10 @@ require.config({
         jquery: './vendor/jquery',
         'backbone.marionette': './vendor/backbone.marionette',
         'backbone.wreqr': './vendor/backbone.wreqr',
-        backbone: './vendor/backbone',
+        // backbone.js 1.6.1 in vendor is incompatible with Backbone.Marionette 2.4.1
+        // (silent white page — no error). Marionette 2.x requires Backbone ~1.3.x.
+        // Upgrading Marionette would need significant app code changes.
+        backbone: 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min',
         hbs: './vendor/hbs',
         requireLib: './vendor/require',
         underscore: './vendor/underscore',

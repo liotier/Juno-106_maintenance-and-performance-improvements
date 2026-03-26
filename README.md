@@ -2,7 +2,7 @@
 
 106.js is an emulation of the classic [Roland Juno-106 analog synthesizer](http://en.wikipedia.org/wiki/Roland_Juno-106).
 
-[You can play 106.js here](https://liotier.github.io/juno106-ouarpeggiator/).
+[You can play 106.js here](https://liotier.github.io/Juno-106_maintenance-and-performance-improvements/).
 
 # System Requirements
 
@@ -106,15 +106,17 @@ Juno-106.js was written in Javascript using the [WebAudio](http://webaudio.githu
 * v1.0: First public release — 5/18/2015
 * v1.1: Naming and sharing of user patches — 5/21/2015
 * v1.2: MIDI CC mapping — 5/31/2015
-* v1.3: Fork improvements
+* v1.3: Ouarpeggiator integration and improvements
+  * Ouarpeggiator integration: accepts postMessage MIDI events from [Ouarpeggiator](https://liotier.github.io/ouarpeggiator/)
   * Fixed broken page load caused by stale require-handlebars-plugin submodule and incorrect i18nprecompile stub
   * All notes silenced when window is hidden (tab switch, minimise)
   * Linting cleanup in envelope code
   * **Performance:** white noise buffer shared across all voices instead of reallocating per note; fader drag handler throttled to 60 fps; slot dimensions cached at mousedown instead of forcing layout recalculation per pixel; all audio nodes fully disconnected on voice release
   * **Memory:** global `mousemove`/`mouseup`/`keydown`/`keyup` event listeners now namespaced and removed on view destroy
-  * **Vendor library updates:** jQuery 2.1.3→3.7.1, Underscore 1.8.2→1.13.8, Backbone 1.1.2→1.6.1, Backbone.Wreqr 1.3.2→1.4.0, RequireJS 2.1.17→2.3.8, Handlebars 3.0.1→4.7.8
+  * **Vendor library updates:** jQuery 2.1.3→3.7.1, Underscore 1.8.2→1.13.8, Backbone.Wreqr 1.3.2→1.4.0, RequireJS 2.1.17→2.3.8, Handlebars 3.0.1→4.7.8
   * **Dead code removed:** ZeroClipboard (Flash), backbone.paginator, backbone.poller, backbone.routefilter, backbone.babysitter (bundled in Marionette), duplicate Handlebars 1.0.rc.1
   * Share URL copy now uses native [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) instead of Flash
   * CDN references upgraded to HTTPS
   * Modernizr deferred to avoid render-blocking
   * MIDI browser support updated: Firefox v108+ confirmed working; Safari noted as unsupported
+  * Keyboard input now uses physical key position (`KeyboardEvent.code`) instead of character code, so AZERTY/QWERTZ/Dvorak layouts work correctly
