@@ -44,7 +44,7 @@ define([
             },
             
             keyUpHandler: function(e) {
-                var keyCode = e.which;
+                var keyCode = e.code;
                 var noteEl;
                 var noteName;
                 
@@ -60,7 +60,7 @@ define([
             keyDownHandler: function(e) {
                 if($('.js-edit-patch-name').is(':focus')) return;
                 
-                var keyCode = e.which;
+                var keyCode = e.code;
                 var noteEl = this.$('[id*=' + '"' + util.keyMap[keyCode] + '"]').parent();
                 var noteName = noteEl.attr('id');
                 
