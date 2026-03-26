@@ -7,13 +7,13 @@ require.config({
     paths: {
         tmpl: '../templates',
         tuna: './vendor/tuna',
-        jquery: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min',
+        jquery: './vendor/jquery',
         'backbone.marionette': './vendor/backbone.marionette',
         'backbone.wreqr': './vendor/backbone.wreqr',
-        backbone: 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min',
+        backbone: './vendor/backbone',
         hbs: './vendor/hbs',
         requireLib: './vendor/require',
-        underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min',
+        underscore: './vendor/underscore',
         'backbone.modal': './vendor/backbone.modal',
         'handlebars-v4.7.8': './vendor/handlebars-v4.7.8'
     },
