@@ -14,7 +14,8 @@ require.config({
         hbs: './vendor/hbs',
         requireLib: './vendor/require',
         underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min',
-        'backbone.modal': './vendor/backbone.modal'
+        'backbone.modal': './vendor/backbone.modal',
+        'handlebars-v4.7.8': './vendor/handlebars-v4.7.8'
     },
 
     shim: {
