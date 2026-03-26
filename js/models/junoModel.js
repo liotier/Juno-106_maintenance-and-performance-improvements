@@ -30,7 +30,9 @@ define([
                     'lfo-rate': 0,
                     'lfo-delay': 0,
                     'lfo-freqMod': 0,
-                    'hpf-cutoff': 0
+                    'hpf-cutoff': 0,
+                    'prt-time': 0,
+                    'uni-enabled': 0
                 };
             },
             
