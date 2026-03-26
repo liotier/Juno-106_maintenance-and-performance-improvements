@@ -7,16 +7,18 @@ require.config({
     paths: {
         tmpl: '../templates',
         tuna: './vendor/tuna',
-        jquery: './vendor/jquery',
+        // jQuery 3.7.1, Backbone 1.6.1, and Underscore 1.13.8 are in vendor/,
+        // but Backbone.Marionette 2.4.1 (vendor/backbone.marionette.js) was
+        // written against Backbone ~1.3.x, jQuery ~2.x, and Underscore ~1.9.x.
+        // Upgrading Marionette to work with these newer versions is a significant
+        // migration. For now, pin to CDN versions that are known to be compatible.
+        jquery: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min',
+        backbone: 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min',
+        underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min',
         'backbone.marionette': './vendor/backbone.marionette',
         'backbone.wreqr': './vendor/backbone.wreqr',
-        // backbone.js 1.6.1 in vendor is incompatible with Backbone.Marionette 2.4.1
-        // (silent white page — no error). Marionette 2.x requires Backbone ~1.3.x.
-        // Upgrading Marionette would need significant app code changes.
-        backbone: 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min',
         hbs: './vendor/hbs',
         requireLib: './vendor/require',
-        underscore: './vendor/underscore',
         'backbone.modal': './vendor/backbone.modal',
         'handlebars-v4.7.8': './vendor/handlebars-v4.7.8'
     },
