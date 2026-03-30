@@ -130,14 +130,11 @@ define([
 
             bindSwitches: function() {
                 var that = this;
-
-                this.ui.switchKnob.mousedown(function(e) {
-                    that.dragging = $(e.currentTarget);
+                this.$('.switch').mousedown(function(e) {
+                    that.dragging = $(e.currentTarget).find('.switch__knob');
                 });
-
-                // Click-to-toggle for binary switches (length === 2)
-                this.ui.switchKnob.click(function(e) {
-                    var el = $(e.currentTarget);
+                this.$('.switch').click(function(e) {
+                    var el = $(e.currentTarget).find('.switch__knob');
                     if(el.data('length') !== 2) return;
                     var current = el.data('value');
                     var newValue = current === 0 ? 1 : 0;
