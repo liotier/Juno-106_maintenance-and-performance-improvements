@@ -3,28 +3,29 @@ define([
     'application',
     'util'
     ],
-    
+
     function(Backbone, App, util) {
         return Backbone.Marionette.ItemView.extend({
-            
+
             ui: {
                 faderKnob: '.fader__knob',
                 switchKnob: '.switch__knob',
                 button: '.button'
             },
-            
+
             events: {
                 'contextmenu @ui.switchKnob': 'showContextMenu',
                 'contextmenu @ui.faderKnob': 'showContextMenu',
                 'contextmenu @ui.button': 'showContextMenu'
             },
-            
+
             styleParent: function(className) {
                 this.$el.parent().addClass('module').addClass(className);
             },
-            
+
             initialize: function() {
                 var that = this;
+                var multiplier;
 
                 this.dragging = null;
                 this._viewId = _.uniqueId('moduleView');
@@ -56,7 +57,7 @@ define([
                 $(window).off('mousemove.' + this._viewId);
                 $(window).off('mouseup.' + this._viewId);
             },
-            
+
             bindFaders: function() {
                 var that = this;
 
@@ -73,7 +74,7 @@ define([
                 var value;
                 var slotTop = this._dragSlotTop;
                 var faderCompensation = this.clickOffset / this._dragSlotHeight * 100;
-                
+
                 if((yPos - faderCompensation) < slotTop) {
                     position = -5;
                 } else if(yPos > (slotTop + this._dragSlotHeight + faderCompensation)) {
@@ -83,35 +84,35 @@ define([
                 }
 
                 el.css({
-					top: position + '%'
+                    top: position + '%'
                 });
-                
+
                 value = (100 - (position + 5)) / 100;
-                
+
                 this.triggerUpdate(el.data().param, value);
             },
-            
+
             updateSwitchUI: function(el, param, newValue) {
                 var switchObject = this.getSwitchObject(el);
                 var offset = switchObject.getOffset(newValue);
                 var positionIndex = 0;
-                
+
                 el.data('value', newValue);
-                
+
                 for(var i = 0; i < this.positions[param].length; i++) {
                     if(offset > this.positions[param][i]) {
                         positionIndex = i;
                     }
                 }
-                
+
                 if(positionIndex !== -1) {
                     el.css({
-                         bottom: this.positions[param][positionIndex] + (switchObject.switchThickness * 
+                         bottom: this.positions[param][positionIndex] + (switchObject.switchThickness *
                              (1 / switchObject.switchPositions))
                     });
-                }        
+                }
             },
-            
+
             setupSwitchPositions: function() {
                 var that = this;
                 var positionArray;
@@ -124,38 +125,63 @@ define([
                     }
                     that.positions[$(this).data('param')] = positionArray;
                 });
-                
+
             },
-            
+
             bindSwitches: function() {
                 var that = this;
-                
+
                 this.ui.switchKnob.mousedown(function(e) {
                     that.dragging = $(e.currentTarget);
-                });   
+                });
+
+                // Click-to-toggle for binary switches (length === 2)
+                this.ui.switchKnob.click(function(e) {
+                    var el = $(e.currentTarget);
+                    if(el.data('length') !== 2) return;
+                    var current = el.data('value');
+                    var newValue = current === 0 ? 1 : 0;
+                    el.data('value', newValue);
+                    that.updateSwitchUI(el, el.data('param'), newValue);
+                    that.triggerUpdate(el.data('param'), newValue);
+                });
             },
-            
+
+            // Allow clicking labels next to a 3-position switch to jump directly to that position.
+            bindRangeLabels: function(labelSelector, switchParam) {
+                var that = this;
+                $(labelSelector).click(function(e) {
+                    var labels = $(labelSelector).toArray().reverse();
+                    var idx = labels.indexOf(e.currentTarget);
+                    if(idx < 0) return;
+                    var el = that.$('[data-param="' + switchParam + '"]');
+                    el.data('value', idx);
+                    that.updateSwitchUI(el, switchParam, idx);
+                    that.triggerUpdate(switchParam, idx);
+                });
+            },
+
             calculateSwitchMovement: function(el, yPos) {
                 var switchObject = this.getSwitchObject(el);
                 var mouseOffset = switchObject.switchBottom() - yPos;
                 var newPosition = 0;
-            
+
                 for(var j = 0; j < el.data('length'); j++) {
                     if(mouseOffset > this.positions[el.data('param')][j]) {
                         newPosition = j;
                     }
                 }
                 el.css({
-                    bottom: this.positions[el.data('param')][newPosition] + 
+                    bottom: this.positions[el.data('param')][newPosition] +
                         0.5 * switchObject.switchThickness
                 });
-            
+
                 if(el.data('value') !== newPosition) {
                     el.data('value', newPosition);
                     this.triggerUpdate(el.data().param, newPosition);
                 }
             },
-            
+
             getSwitchObject: function(el) {
                 return {
                     switchThickness: el.height(),
@@ -164,19 +190,21 @@ define([
                     switchPositions: el.data('length'),
                     multiplier: function() { return this.switchHeight / this.switchPositions; },
                     getOffset: function(newValue) {
-                        return newValue === 0 ? 0 : this.multiplier() * newValue + 
+                        return newValue === 0 ? 0 : this.multiplier() * newValue +
                             (1 / this.switchPositions * newValue * this.switchThickness);
                     }
                 };
             },
-            
+
             bindButtons: function() {
                 this.ui.button.click(function(e) {
                     this.triggerButton($(e.currentTarget));
                 }.bind(this));
             },
-            
+
             setupButtonState: function(el, value) {
+                var data;
+
                 el.toggleClass('pressed', !!value);
                 el.siblings('.led').toggleClass('led--lit', !!value);
                 el.data('value', value);
@@ -185,13 +213,13 @@ define([
                 } else if(!el.hasClass('js-chorus')) {
                     this.triggerUpdate(el.data().param, value);
                 }
-                
+
             },
-            
+
             triggerButton: function(button, value) {
                 var data = button.data();
                 var newValue;
-    
+
                 if(button.hasClass('js-chorus')) {
                     if(button.hasClass('pressed')) return;
                     button.parent().siblings().children().removeClass('pressed led--lit').data('value', 0);
@@ -202,19 +230,19 @@ define([
                 button.data('value', newValue);
                 this.triggerUpdate(data.param, data.value);
             },
-            
+
             triggerUpdate: function(param, value) {
                 var update = {
                     param: param,
                     value: value
                 };
-                
+
                 this.trigger('update', update);
             },
-            
+
             updateUIState: function(param, value) {
                 var el = $('[data-param="' + param + '"]');
-                
+
                 if(el.hasClass('fader__knob')) {
                     this.setupFaderPosition(el, value);
                 } else if(el.hasClass('switch__knob')) {
@@ -223,40 +251,40 @@ define([
                     this.setupButtonState(el, value);
                 }
             },
-            
+
             setupFaderPosition: function(el, value) {
                 this.slotHeight = el.parent().height();
                 this.slotTop = el.parent().offset().top;
                 this.faderThickness = el.height();
-                
+
                 var topPercentOffset = 1 - value;
                 var topPxOffset = (topPercentOffset * this.slotHeight) -
                     (0.5 * this.faderThickness);
-                
+
                 el.css({
                     top: topPxOffset
                 });
             },
-            
+
             setupSwitchPosition: function(el, value) {
                 var param = el.data().param;
                 this.updateSwitchUI(el, param, value);
             },
-            
+
             showContextMenu: function(e) {
                 var midiChannel = Backbone.Wreqr.radio.channel('midi');
                 if(!midiChannel.reqres.request('input')) return;
-                
+
                 var param = $(e.currentTarget).data().param;
                 var parsedParam = util.parseParamName(param);
-                
-                var options = { 
+
+                var options = {
                     offsetX: 50,
                     param: parsedParam
                 };
-                
+
                 var CC = midiChannel.reqres.request('midiAssignment', param);
-                
+
                 if(_.isUndefined(CC)) {
                     options.assignment = 'Un-assigned';
                     options.menuOptions = [
@@ -278,6 +306,6 @@ define([
                 App.contextMenu.rightClickHandler(e);
                 e.preventDefault();
             }
-            
+
         });
     });
