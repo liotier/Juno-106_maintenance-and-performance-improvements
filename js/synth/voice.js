@@ -129,15 +129,15 @@ define([
                             break;
                         case 1:
                             this.bypass = 0;
-                            this.feedback = 0.1;
+                            this.feedback = 0;
                             this.delay = 0.3;
-                            this.rate = 0.05;
+                            this.rate = 0.5;
                             break;
                         case 2:
                             this.bypass = 0;
-                            this.feedback = 0.35;
+                            this.feedback = 0;
                             this.delay = 0.6;
-                            this.rate = 0.15;
+                            this.rate = 0.8;
                             break;
                     }
                 }

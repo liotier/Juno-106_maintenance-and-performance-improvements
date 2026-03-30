@@ -6,17 +6,17 @@
 
 # System Requirements
 
-Minimum window size of 1024×768. Works in any modern browser with Web Audio API support. [Google Chrome](https://www.google.com/chrome/browser/desktop/) is recommended.
+Minimum window size of 1024x768. A modern browser with Web Audio API support is required (Chrome, Firefox, Safari, Edge).
 
 # How to play
 
-106.js is best played with a MIDI keyboard. See [the next section](README.md#midi) for MIDI setup instructions. Notes can also be played with a computer keyboard, or by clicking the keys with a mouse. Like the original hardware synthesizer, the 106.js can play up to 6 notes at a time.
+106.js is best played with a MIDI keyboard. See [the next section](README.md#midi) for MIDI setup instructions. Notes can also be played with a computer keyboard, or by clicking the keys with a mouse. Like the original hardware synthesizer, 106.js can play up to 6 notes at a time.
+
+Key mappings are based on **physical key position** rather than letter, so the keyboard works correctly regardless of your layout (QWERTY, AZERTY, QWERTZ, Dvorak, etc.).
 
 Please note that due to a phenomenon known as [keyboard ghosting](http://www.microsoft.com/appliedsciences/antighostingexplained.mspx), certain simultaneous combinations of more than 2 keys will not register when held on the computer keyboard. This is a limitation of computer keyboard hardware, and not with 106.js.
 
-Also note that in addition to the labeled keyboard assignments, the key mappings extend to cover the entire top and bottom row of the `QWERTY` keyboard, in order to allow for a variety of playing positions.
-
-Click `Reset` at the top of the screen at any time to return the 106.js to its initial state.
+Click `Reset` at the top of the screen at any time to return 106.js to its initial state.
 
 When you've found a sound that you like, click on the `PATCH NAME` text at the top of the screen to edit the name of your patch. Then click `SHARE` and click the icon to copy a special URL to your clipboard. Anyone who loads that URL will load your patch.
 
@@ -24,82 +24,83 @@ When you've found a sound that you like, click on the `PATCH NAME` text at the t
 
 For MIDI connectivity, you must use a browser that supports the [Web MIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API). Chrome (since v43) and Firefox (since v108) are confirmed to work. Safari does not support Web MIDI.
 
-Every control on the 106.js is mappable to respond to MIDI CC messages, and your MIDI mappings will be remembered when you leave the page. This means that once you've mapped the on-screen controls to your hardware controller, you can play 106.js without touching the mouse and keyboard. If you have multiple MIDI inputs, 106.js will remember all of your mappings separately. 106.js supports both 7-bit and 14-bit MIDI messages. Simply right-click a control to begin mapping.
+Every control on 106.js is mappable to respond to MIDI CC messages, and your MIDI mappings will be remembered when you leave the page. This means that once you've mapped the on-screen controls to your hardware controller, you can play 106.js without touching the mouse and keyboard. If you have multiple MIDI inputs, 106.js will remember all of your mappings separately. 106.js supports both 7-bit and 14-bit MIDI messages. Simply right-click a control to begin mapping.
+
+**Pitch bend** is automatically supported: if your controller sends MIDI pitch bend messages, they are applied in real time to all active voices (±2 semitones).
 
 Note that if you're mapping a button or switch on your controller that only sends one message at a time, you'll have to press it a few times in order for the mapping to be assigned.
 
 # Synthesis Overview
 
-The following is a brief description of each control on the 106.js. Many of these controls are also found on other analog and virtual analog synthesizers.
+The following is a brief description of each control on 106.js.
 
-If you've never played with synthesizers before, the controls may seem overwhelming at first. A good entry point is to experiment with the filter cutoff (the `FREQ` knob in the `VCF` section) and the amplifier envelope (the `A`, `D`, `S`, and `R` knobs in the `ENV` section). The former alters the brightness of the sound, and the latter change the attack, decay, sustain, and release, respectively, shaping the volume of the sound over time as you press and then let go of the keys.
+If you've never played with synthesizers before, a good entry point is to experiment with the filter cutoff (the `FREQ` fader in the `VCF` section) and the amplifier envelope (`A`, `D`, `S`, `R` in the `ENV` section). The former alters the brightness of the sound; the latter shapes the volume over time as you press and release keys.
 
-For more detailed instructions, consult the [Juno 106 owner's manual](http://www.synthfool.com/docs/Roland/Juno_Series/Roland_Juno_106/Roland_Juno106_Owners_Manual.pdf).
+For more detailed instructions, consult the [Juno-106 owner's manual](http://www.synthfool.com/docs/Roland/Juno_Series/Roland_Juno_106/Roland_Juno106_Owners_Manual.pdf).
 
 **LFO - Low Frequency Oscillator**
-A triangle-wave oscillator that is heard indirectly, through its effects on other parameters.
+A triangle-wave oscillator heard indirectly through its effects on other parameters.
 
 * Rate: Controls the speed of the LFO.
-* Delay: Controls the speed at which the LFO fades in on triggering a note.
+* Delay: Controls how quickly the LFO fades in after a note is triggered.
 
 **DCO - Digitally Controlled Oscillator**
-Sound sources that are heard directly.
+Sound sources heard directly.
 
-* Range: Selects the keyboard octave.
-* LFO: Selects the extent to which the LFO modulates the oscillator pitch -- i.e., adjusts the depth of vibrato.
-* PWM: In manual mode, sets the width of the pulse wave, between 5% and 95%. In LFO mode, selects the extent to which the LFO modulates pulse width.
+* Range: Selects the keyboard octave (4', 8', 16'). Click a label to jump directly to that position.
+* LFO: Depth of LFO modulation on oscillator pitch (vibrato).
+* PWM: In MAN mode, sets pulse wave width. In LFO mode, sets LFO modulation depth on pulse width.
+* LFO/MAN: Selects pulse-width modulation source. Click to toggle.
 * PULSE/SAW: Toggles pulse and sawtooth waveforms.
-* SUB: Sets volume of square-wave sub-oscillator, one octave below main oscillator.
-* NOISE: Sets volume of noise generator.
+* SUB: Volume of square-wave sub-oscillator (one octave below).
+* NOISE: Volume of noise generator.
 
 **VCF - Voltage Controlled Filter**
-24 dB/octave resonant lowpass filter
+Cascaded 24 dB/octave resonant lowpass filter.
 
-* FREQ: Sets filter cutoff. Higher values let more high frequencies pass through, for a brighter sound.
-* RES: Controls resonance, which is a gain increase at the point of the filter cutoff.
-* NORM/INV: Whether or not to invert the filter.
-* ENV: The extent to which the envelope is applied to the filter cutoff.
-* LFO: The extent to which the LFO is applied to the filter cutoff.
-* KBD: The extent to which the filter cutoff tracks the keyboard pitch.
+* FREQ: Filter cutoff frequency.
+* RES: Resonance — gain peak at the cutoff frequency.
+* NORM/INV: Envelope direction. Click to toggle.
+* ENV: Depth of envelope modulation on filter cutoff.
+* LFO: Depth of LFO modulation on filter cutoff.
+* KBD: How much the filter cutoff tracks keyboard pitch.
 
 **HPF - High Pass Filter**
-12 dB/octave non-resonant highpass filter
+Non-resonant highpass filter.
 
-* FREQ: Set the level higher to filter out more low-frequency content.
+* FREQ: Higher values filter out more low-frequency content.
 
 **VCA - Voltage Controlled Amplifier**
-Controls the overall volume level.
 
-* ENV/GATE: In ENV mode, the volume will be shaped by the envelope. In GATE mode, notes will instantly turn on and off when keys are pressed and released. Note that in GATE mode, the ENV can still be applied to the filter cutoff.
-* LEVEL: Overall volume.
+* ENV/GATE: ENV shapes volume with the envelope; GATE plays notes at full level instantly. Click to toggle.
+* LEVEL: Overall output volume.
 
 **ENV - Envelope**
-Envelope shared by both the amplifier and filter.
+Envelope with authentic RC (exponential) curves shared by the amplifier and filter.
 
-* A: Attack - how quickly the volume/filter rises to its maximum level when a note is triggered.
-* D: Decay - after reaching its maximum level, how quickly the volume/filter falls back down to the sustain level.
-* S: Sustain - the level at which the volume/filter maintains itself while a note is held.
-* R: Release - how long the volume/filter takes to fade out once a note is released.
+* A: Attack — how quickly volume/filter rises to maximum.
+* D: Decay — how quickly it falls to the sustain level.
+* S: Sustain — level held while a note is pressed.
+* R: Release — how long the sound fades after a note is released.
+* PORTA: Portamento (glide) time. At zero, notes play immediately. Higher values cause pitch to slide from the previous note to the new one (up to ~3 seconds).
+* UNISON: When lit, all 6 voices play the same note simultaneously with slight per-voice detuning, producing a thick, fat sound. New notes cut previous ones.
 
 **CHORUS**
-A chorus effect.
+BBD-style chorus effect.
 
 * OFF: No effect.
-* I: Moderate chorus effect.
-* II: Stronger chorus effect.
+* I: Moderate chorus.
+* II: Deeper, richer chorus.
 
 # Technology
 
-Juno-106.js was written in Javascript using the [WebAudio](http://webaudio.github.io/web-audio-api/) and [Web MIDI](http://www.w3.org/TR/webmidi/) APIs as well as [Backbone.Marionette](http://marionettejs.com). It also uses some effects from [tuna.js](https://github.com/Theodeus/tuna) by Dinahmoe.
+106.js uses the [Web Audio API](http://webaudio.github.io/web-audio-api/) and [Web MIDI API](http://www.w3.org/TR/webmidi/), with [Backbone.Marionette](https://marionettejs.com) for the UI and effects from [tuna.js](https://github.com/Dinahmoe/tuna) by Dinahmoe.
 
 # TO-DO
 
 * Touch events
-* Tweak chorus
 * Alternate PWM Implementation
 * Filter self-resonance
-* Portamento
-* Bender
 
 # Changelog
 
@@ -112,10 +113,19 @@ Juno-106.js was written in Javascript using the [WebAudio](http://webaudio.githu
   * Linting cleanup in envelope code
   * **Performance:** white noise buffer shared across all voices instead of reallocating per note; fader drag handler throttled to 60 fps; slot dimensions cached at mousedown instead of forcing layout recalculation per pixel; all audio nodes fully disconnected on voice release
   * **Memory:** global `mousemove`/`mouseup`/`keydown`/`keyup` event listeners now namespaced and removed on view destroy
-  * **Vendor library updates:** jQuery 2.1.3→3.7.1, Underscore 1.8.2→1.13.8, Backbone 1.1.2→1.6.1, Backbone.Wreqr 1.3.2→1.4.0, RequireJS 2.1.17→2.3.8, Handlebars 3.0.1→4.7.8
+  * **Vendor library updates:** jQuery 2.1.3→3.7.1, Underscore 1.8.2→1.13.8, Backbone.Wreqr 1.3.2→1.4.0, RequireJS 2.1.17→2.3.8, Handlebars 3.0.1→4.7.8
   * **Dead code removed:** ZeroClipboard (Flash), backbone.paginator, backbone.poller, backbone.routefilter, backbone.babysitter (bundled in Marionette), duplicate Handlebars 1.0.rc.1
   * Share URL copy now uses native [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) instead of Flash
   * CDN references upgraded to HTTPS
   * Modernizr deferred to avoid render-blocking
   * MIDI browser support updated: Firefox v108+ confirmed working; Safari noted as unsupported
-  * Keyboard input now uses physical key position (`KeyboardEvent.code`) instead of character code, so non-QWERTY layouts work correctly
+  * Keyboard input now uses physical key position (`KeyboardEvent.code`) instead of character code, so AZERTY/QWERTZ/Dvorak layouts work correctly
+  * Click-to-toggle binary switches (LFO/MAN, ENV/GATE, NORM/INV, PULSE/SAW)
+  * Click-to-position ternary RANGE switch labels
+  * Portamento/glide fader (PORTA) in ENV section
+  * Unison mode button — all 6 voices on one note with per-voice detuning
+  * MIDI pitch bend support (±2 semitones)
+  * RC-like exponential envelope curves for more authentic Juno-106 character
+  * Per-voice random detuning (±8 cents) for analogue warmth
+  * Chorus: zero cross-channel feedback (authentic to Juno-106 BBD), corrected sweep rates
+
