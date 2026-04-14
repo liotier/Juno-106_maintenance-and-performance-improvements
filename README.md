@@ -22,15 +22,13 @@ When you've found a sound that you like, click on the `PATCH NAME` text at the t
 
 # MIDI
 
+For MIDI connectivity, you must use a browser that supports the [Web MIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API). Chrome (since v43) and Firefox (since v108) are confirmed to work. Safari does not support Web MIDI.
+
 Every control on 106.js is mappable to respond to MIDI CC messages, and your MIDI mappings will be remembered when you leave the page. This means that once you've mapped the on-screen controls to your hardware controller, you can play 106.js without touching the mouse and keyboard. If you have multiple MIDI inputs, 106.js will remember all of your mappings separately. 106.js supports both 7-bit and 14-bit MIDI messages. Simply right-click a control to begin mapping.
 
 **Pitch bend** is automatically supported: if your controller sends MIDI pitch bend messages, they are applied in real time to all active voices (±2 semitones).
 
 Note that if you're mapping a button or switch on your controller that only sends one message at a time, you'll have to press it a few times in order for the mapping to be assigned.
-
-# Ouarpeggiator Integration
-
-This fork integrates with [Ouarpeggiator](https://liotier.github.io/ouarpeggiator/). Open both pages and the Ouarpeggiator will send MIDI note messages to 106.js via `postMessage`.
 
 # Synthesis Overview
 
@@ -98,12 +96,11 @@ BBD-style chorus effect.
 
 | Branch | Purpose |
 |---|---|
-| `master` | Pristine copy of the original [stevengoldberg/juno106](https://github.com/stevengoldberg/juno106) upstream at the point of fork |
-| `upstream-fixes` | Bug fixes and improvements suitable for submission upstream (keyboard layout independence, Handlebars/RequireJS fixes) |
-| `main-but-with-ouarpeggiator-integration` | **Production branch** — what is deployed to GitHub Pages. Adds Ouarpeggiator `postMessage` integration on top of `upstream-fixes` |
-| `claude/add-message-listener-4mpv8` | **Development branch** — active feature work. Merged into `main-but-with-ouarpeggiator-integration` when stable |
+| `master` | All improvements without Ouarpeggiator integration — for users who want the fixes and features without the Ouarpeggiator |
+| `master-but-with-ouarpeggiator-integration` | **Production branch** — deployed to GitHub Pages. All improvements plus Ouarpeggiator `postMessage` integration |
+| `upstream-pr` | Subset of improvements submitted as [PR #7](https://github.com/stevengoldberg/juno106/pull/7) to the original upstream |
 
-GitHub Pages serves from `main-but-with-ouarpeggiator-integration`.
+GitHub Pages serves from `master-but-with-ouarpeggiator-integration`.
 
 # Technology
 
@@ -114,8 +111,7 @@ GitHub Pages serves from `main-but-with-ouarpeggiator-integration`.
 * v1.0: First public release — 2015-05-18
 * v1.1: Naming and sharing of user patches — 2015-05-21
 * v1.2: MIDI CC mapping — 2015-05-31
-* v1.3 (this fork):
-  * Ouarpeggiator integration via `postMessage`
+* v1.3 (liotier fork):
   * Keyboard-layout-independent key mapping (AZERTY, QWERTZ, Dvorak, etc.)
   * Click-to-toggle binary switches (LFO/MAN, ENV/GATE, NORM/INV, PULSE/SAW)
   * Click-to-position ternary RANGE switch labels
@@ -124,4 +120,10 @@ GitHub Pages serves from `main-but-with-ouarpeggiator-integration`.
   * MIDI pitch bend support (±2 semitones)
   * RC-like exponential envelope curves for more authentic Juno-106 character
   * Per-voice random detuning (±8 cents) for analogue warmth
+  * Chorus: zero cross-channel feedback (authentic to Juno-106 BBD), corrected sweep rates
+  * Fixed broken page load (stale require-handlebars-plugin submodule, incorrect i18nprecompile stub)
+  * All notes silenced when window is hidden (tab switch, minimise)
+  * **Performance:** white noise buffer shared across voices; fader drag throttled to 60 fps; slot dimensions cached at mousedown; audio nodes fully disconnected on voice release
+  * **Memory:** global event listeners namespaced and removed on view destroy
+  * Share URL copy uses native [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) instead of Flash
   * Dependency fixes: CDN-pinned jQuery 2.x, Backbone 1.3, Underscore 1.9 for Marionette 2.4.1 compatibility
