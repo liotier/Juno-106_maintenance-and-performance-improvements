@@ -97,10 +97,10 @@ BBD-style chorus effect.
 | Branch | Purpose |
 |---|---|
 | `master` | All improvements without Ouarpeggiator integration — for users who want the fixes and features without the Ouarpeggiator |
-| `ouarpeggiator-integration` | **Production branch** — deployed to GitHub Pages. All improvements plus Ouarpeggiator `postMessage` integration |
+| `master-but-with-ouarpeggiator-integration` | **Production branch** — deployed to GitHub Pages. All improvements plus Ouarpeggiator `postMessage` integration |
 | `upstream-pr` | Subset of improvements submitted as [PR #7](https://github.com/stevengoldberg/juno106/pull/7) to the original upstream |
 
-GitHub Pages serves from `ouarpeggiator-integration`.
+GitHub Pages serves from `master-but-with-ouarpeggiator-integration`.
 
 # Technology
 
