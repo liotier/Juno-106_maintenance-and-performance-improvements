@@ -71,11 +71,19 @@ define([
                 this.listenTo(this.synth, 'change', this.synthUpdateHandler);
 
                 window.addEventListener('message', function(e) {
-                    if (e.origin !== 'https://liotier.github.io') return;
+                    console.log('[Juno-106] message received — origin:', e.origin, '— data:', JSON.stringify(e.data));
+                    if (e.origin !== 'https://liotier.github.io') {
+                        console.warn('[Juno-106] message rejected: origin mismatch (expected https://liotier.github.io)');
+                        return;
+                    }
                     Backbone.Wreqr.radio.channel('midi').vent.trigger('message', e.data);
                 });
+                console.log('[Juno-106] window.opener:', window.opener);
                 if (window.opener) {
                     window.opener.postMessage('juno106:ready', 'https://liotier.github.io');
+                    console.log('[Juno-106] ready signal sent to opener');
+                } else {
+                    console.warn('[Juno-106] window.opener is null — ready signal not sent; Ouarpeggiator will not know Juno-106 is up');
                 }
             },
 
