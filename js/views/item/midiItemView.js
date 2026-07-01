@@ -56,7 +56,6 @@ define([
 
             requestMidi: function() {
                 var that = this;
-                var inputs;
 
                 this.inputs = [];
 
@@ -66,8 +65,8 @@ define([
                     navigator.requestMIDIAccess().then(function(access) {
                         if(access.inputs && access.inputs.size > 0) {
                             that.midi = true;
-                            inputs = access.inputs.values();
-                            for (input = inputs.next(); input && !input.done; input = inputs.next()) {
+                            var inputs = access.inputs.values();
+                            for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
                                 that.inputs.push(input.value);
                             }
                             that.render();
