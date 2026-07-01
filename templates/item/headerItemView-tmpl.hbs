@@ -6,9 +6,20 @@
     </svg>
 </a>
 
-<h4>
-    <a class="header__link" href="https://github.com/liotier/Juno-106_maintenance-and-performance-improvements/blob/master/README.md">README</a> // <span class="header__title">106.js</span> : 
-    <span class="header__title header__patch-name js-patch-name">{{patchName}}</span><input class="js-edit-patch-name header__name-input" maxlength="16">
-    <span class="header__title"><i class="js-edit-icon fa fa-pencil-square-o"></i></span> // 
-    <a href="javascript:;" class="header__link js-init">RESET</a> // <a href="javascript:;" class="header__link js-share-patch">SHARE</a>
+<h4 class="header__toolbar">
+    <a class="header__link" href="https://github.com/liotier/Juno-106_maintenance-and-performance-improvements/blob/master/README.md">README</a>
+
+    <span class="header__divider" aria-hidden="true"></span>
+
+    <span class="header__title">106.js</span>
+
+    <span class="header__patch-field">
+        <span class="header__patch-name js-patch-name">{{patchName}}</span><input class="js-edit-patch-name header__name-input" maxlength="16">
+        <i class="js-edit-icon fa fa-pencil-square-o header__patch-field-icon" aria-hidden="true"></i>
+    </span>
+
+    <span class="header__divider" aria-hidden="true"></span>
+
+    <a href="javascript:;" class="header__button js-init"><i class="fa fa-undo" aria-hidden="true"></i>Reset</a>
+    <a href="javascript:;" class="header__button header__button--accent js-share-patch"><i class="fa fa-share-alt" aria-hidden="true"></i>Share patch</a>
 </h4>
