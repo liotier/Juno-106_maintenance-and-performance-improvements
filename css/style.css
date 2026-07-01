@@ -926,7 +926,7 @@ hr {
   max-width: 200px;
 }
 
-.button-container, .knob-container--range, .knob-container--pwm, .knob-container--vca {
+.button-container, .knob-container--range, .knob-container--vcf, .knob-container--pwm, .knob-container--vca {
   display: flex;
   justify-content: center;
   height: 75%;
