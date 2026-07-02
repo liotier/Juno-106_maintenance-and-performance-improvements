@@ -65,6 +65,14 @@ define([
                 
                 var newLevel = chorusLevels[options.chorusLevel];
                 
+                // A per-voice chorus "detune" oscillator used to be created
+                // here. It was started but never stopped — leaking a running
+                // oscillator on every note — and, because its closure was
+                // captured once by the shared chorus object's setters, it only
+                // ever detuned the first voice while adding an audible pitch
+                // drift to it. Removed entirely: dco.js already applies a
+                // static per-voice ±8-cent detune for analogue warmth, without
+                // the drift or the leak.
                 var chorusSetup = function(value) {
                     chorusToggle.call(this.cho, value);
                 }.bind(this);
@@ -152,24 +160,6 @@ define([
                 }
                 
                 this.cho[newLevel] = true;
-
-                // Subtle per-voice oscillator detune for analogue chorus
-                // richness. Created once per voice and released in
-                // disconnect(). Previously an equivalent oscillator was spun
-                // up through the shared chorus setter on every note but never
-                // stopped, leaking a running audio source each time a note
-                // played (and, because the setter closure bound to the first
-                // voice, only ever detuned that first voice). Creating it
-                // directly here fixes both the leak and the per-voice detune.
-                if(options.chorusLevel > 0) {
-                    this.detuneOsc = App.context.createOscillator();
-                    this.detuneGain = App.context.createGain();
-                    this.detuneOsc.frequency.value = 0.05 * options.chorusLevel;
-                    this.detuneGain.gain.value = 5 * options.chorusLevel;
-                    this.detuneOsc.connect(this.detuneGain);
-                    this.connect(this.detuneGain, this.dco.input);
-                    this.detuneOsc.start(0);
-                }
             },
 
             createListeners: function() {
@@ -239,14 +229,6 @@ define([
                     _.forEach(this.dco.output, function(node) {
                         try { node.disconnect(); } catch(e) {}
                     });
-                }
-
-                // Stop and release the per-voice chorus detune oscillator so
-                // it does not linger as a running audio source after the note
-                if (this.detuneOsc) {
-                    try { this.detuneOsc.stop(); } catch(e) {}
-                    try { this.detuneOsc.disconnect(); } catch(e) {}
-                    try { this.detuneGain.disconnect(); } catch(e) {}
                 }
 
                 this.stopListening();
