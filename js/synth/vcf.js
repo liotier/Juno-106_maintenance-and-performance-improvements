@@ -125,17 +125,17 @@ define([
                 filterEnvelope.gain.setValueAtTime(sustainLevel, now);
             }
             
-            // Suggested by Chris Wilson on stackoverflow
-            // http://stackoverflow.com/questions/30019666/web-audio-synthesis-how-to-handle-changing-the-filter-cutoff-during-the-attack
+            // Constant unity signal that drives the filter detune param,
+            // scaled by the envelope and key-follow gains. A native
+            // ConstantSourceNode replaces the original 1-sample looping
+            // AudioBufferSource (Chris Wilson's pre-ConstantSourceNode trick,
+            // http://stackoverflow.com/questions/30019666) — identical constant
+            // output, but without allocating and filling a buffer per voice.
             function createDCOffset() {
-                var buffer = App.context.createBuffer(1, 1, App.context.sampleRate);
-                var data = buffer.getChannelData(0);
-                var bufferSource = App.context.createBufferSource();
-                data[0] = 1;
-                bufferSource.buffer = buffer;
-                bufferSource.loop = true;
-                bufferSource.start(0);
-                return bufferSource;
+                var source = App.context.createConstantSource();
+                source.offset.value = 1;
+                source.start(0);
+                return source;
             }
             
             // Trigger the filter envelope on keypress (RC-like curves)
