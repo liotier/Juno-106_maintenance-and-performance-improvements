@@ -42,12 +42,18 @@ define([
                 var tuna = new Tuna(App.context);
                 this.cho = new tuna.Chorus();
                 this.cho.chorusLevel = this.synth.get('cho-chorusToggle');
+                // Overdrive bypassed: it was waveshaping every voice on the
+                // master bus at all times, adding audible distortion to
+                // transients (short plucks especially). Bypassed so the output
+                // stays clean; the node is left in the chain (passing signal
+                // through) so it can be re-enabled later if a drive control is
+                // ever exposed in the UI.
                 this.drive = new tuna.Overdrive({
                     outputGain: 0,
                     drive: 0.1,
                     curveAmount: 0.2,
                     algorithmIndex: 3,
-                    bypass: 0
+                    bypass: 1
                 });
 
                 this.masterGain = App.context.createGain();
