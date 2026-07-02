@@ -4,10 +4,6 @@
 
 [You can play 106.js here](https://liotier.github.io/Juno-106_maintenance-and-performance-improvements/)
 
-# System Requirements
-
-Minimum window size of 1024x768. A modern browser with Web Audio API support is required (Chrome, Firefox, Safari, Edge).
-
 # How to play
 
 106.js is best played with a MIDI keyboard. See [the next section](README.md#midi) for MIDI setup instructions. Notes can also be played with a computer keyboard, or by clicking the keys with a mouse. Like the original hardware synthesizer, 106.js can play up to 6 notes at a time.
