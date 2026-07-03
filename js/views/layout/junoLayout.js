@@ -210,24 +210,30 @@ define([
             },
 
             synthUpdateHandler: function(update) {
-                var param = Object.keys(update.changed)[0];
-                var value = update.changed[param];
+                // Apply EVERY changed parameter, not just the first. A single
+                // fader move changes one param, but RESET and patch loads set
+                // the whole patch at once; only reading changed[0] meant those
+                // updated a single parameter and silently dropped the rest —
+                // most visibly leaving portamentoTime (and unison) stuck at
+                // their previous values, so a glide survived Reset and ignored
+                // the PORTA fader.
+                _.each(update.changed, function(value, param) {
+                    if(param === 'prt-time') {
+                        this.portamentoTime = value * 3;
+                        return;
+                    }
+                    if(param === 'uni-enabled') {
+                        this.unisonEnabled = !!value;
+                        return;
+                    }
 
-                if(param === 'prt-time') {
-                    this.portamentoTime = value * 3;
-                    return;
-                }
-                if(param === 'uni-enabled') {
-                    this.unisonEnabled = !!value;
-                    return;
-                }
+                    var component = param.slice(0, 3);
+                    var attr = param.slice(4);
 
-                var component = param.slice(0, 3);
-                var attr = param.slice(4);
-
-                _.each(this.activeVoices, function(voice) {
-                    voice[component][attr] = value;
-                });
+                    _.each(this.activeVoices, function(voice) {
+                        voice[component][attr] = value;
+                    });
+                }, this);
             },
 
             handleReset: function() {
