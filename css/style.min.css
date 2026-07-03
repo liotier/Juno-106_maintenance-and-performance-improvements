@@ -1071,8 +1071,16 @@ hr {
 }
 
 .label-container {
+  display: flex;
   height: 10%;
-  margin: 13px 0 0 0;
+  margin: 13px auto 0 auto;
+  width: 90%;
+}
+.label-container > span {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  margin: 0;
 }
 
 .led, .led--lit {
