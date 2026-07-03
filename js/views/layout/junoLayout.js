@@ -33,7 +33,6 @@ define([
                 this.activeVoices = [];
                 this.synth = new JunoModel();
                 this.portamentoTime = 0;
-                window.juno106debug = this; // TEMP diagnostic — remove after
                 this.lastFrequency = null;
                 this.unisonEnabled = false;
                 this.pitchBendSemitones = 0;
@@ -123,10 +122,6 @@ define([
                 if(fromFrequency && this.portamentoTime > 0) {
                     voice.dco.portamento(fromFrequency, frequency, this.portamentoTime);
                 }
-                console.log('[PORTA-DIAG] spawnVoice  portamentoTime=' + this.portamentoTime +
-                    '  lastFrequency=' + this.lastFrequency + '  targetFreq=' + frequency +
-                    '  portamentoApplied=' + !!(fromFrequency && this.portamentoTime > 0) +
-                    '  pitchBend=' + this.pitchBendSemitones); // TEMP diagnostic — remove after
 
                 if(this.pitchBendSemitones !== 0) {
                     voice.dco.pitchBend = this.pitchBendSemitones;
