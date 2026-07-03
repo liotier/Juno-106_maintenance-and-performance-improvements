@@ -1140,7 +1140,8 @@ hr {
   display: inline-block;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  transition: background-color 0.1s ease-out;
+  -webkit-transition: background-color 0.1s ease-out;
+          transition: background-color 0.1s ease-out;
   cursor: pointer;
 }
 
