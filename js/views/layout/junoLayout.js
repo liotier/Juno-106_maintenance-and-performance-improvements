@@ -37,7 +37,9 @@ define([
                 this.unisonEnabled = false;
                 this.pitchBendSemitones = 0;
 
-                this.cachedSynth = JSON.stringify(this.synth.attributes);
+                // Reset restores the blank init patch (not the rich page-load
+                // default), giving experts a clean slate.
+                this.cachedSynth = JSON.stringify(this.synth.initPatch());
 
                 var tuna = new Tuna(App.context);
                 this.cho = new tuna.Chorus();

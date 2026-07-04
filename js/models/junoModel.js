@@ -41,7 +41,46 @@ define([
                     'uni-enabled': 0
                 };
             },
-            
+
+            // Blank "init" patch used by the Reset button — a single raw
+            // sawtooth with the filter fully open and no modulation or effects,
+            // so experts get a predictable clean slate to build from. Page load
+            // uses the richer defaults() patch above; Reset uses this. Level,
+            // cutoff and sustain stay at their raw/neutral positions rather than
+            // literally zero, since zero there would just be silence.
+            initPatch: function() {
+                return {
+                    'vca-level': 0.5,
+                    'env-attack': 0,
+                    'env-decay': 0,
+                    'env-sustain': 1,
+                    'env-release': 0,
+                    'vca-envEnabled': 1,
+                    'dco-sawtooth': 1,
+                    'dco-pulse': 0,
+                    'dco-noise': 0,
+                    'dco-pwm': 0,
+                    'dco-range': 1,
+                    'dco-sub': 0,
+                    'dco-lfoPwmEnabled': 0,
+                    'cho-chorusOff': 1,
+                    'cho-chorusI': 0,
+                    'cho-chorusII': 0,
+                    'vcf-cutoff': 1,
+                    'vcf-res': 0,
+                    'vcf-envMod': 0,
+                    'vcf-invert': 1,
+                    'vcf-keyFollow': 0,
+                    'lfo-pitchMod': 0,
+                    'lfo-rate': 0,
+                    'lfo-delay': 0,
+                    'lfo-freqMod': 0,
+                    'hpf-cutoff': 0,
+                    'prt-time': 0,
+                    'uni-enabled': 0
+                };
+            },
+
             getOptions: function(frequency) {
                 return {
                     frequency: this.getCurrentRange(frequency),
