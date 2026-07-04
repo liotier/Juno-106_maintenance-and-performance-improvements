@@ -65,22 +65,18 @@ define([
                 
                 var newLevel = chorusLevels[options.chorusLevel];
                 
+                // A per-voice chorus "detune" oscillator used to be created
+                // here. It was started but never stopped — leaking a running
+                // oscillator on every note — and, because its closure was
+                // captured once by the shared chorus object's setters, it only
+                // ever detuned the first voice while adding an audible pitch
+                // drift to it. Removed entirely: dco.js already applies a
+                // static per-voice ±8-cent detune for analogue warmth, without
+                // the drift or the leak.
                 var chorusSetup = function(value) {
-                    setDetune(value);
                     chorusToggle.call(this.cho, value);
                 }.bind(this);
 
-                // Additional detune for chorus effect
-                var setDetune = function(value) {
-                    var detune = App.context.createOscillator();
-                    var gain = App.context.createGain();
-                    detune.start(0);
-                    detune.frequency.value = (0.05 * value);
-                    gain.gain.value = (5 * value);
-                    detune.connect(gain);
-                    this.connect(gain, this.dco.input);
-                }.bind(this);
-                
                 this.vcf = new VCF({
                     frequency: options.vcfFreq,
                     res: options.res,

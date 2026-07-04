@@ -37,17 +37,25 @@ define([
                 this.unisonEnabled = false;
                 this.pitchBendSemitones = 0;
 
-                this.cachedSynth = JSON.stringify(this.synth.attributes);
+                // Reset restores the blank init patch (not the rich page-load
+                // default), giving experts a clean slate.
+                this.cachedSynth = JSON.stringify(this.synth.initPatch());
 
                 var tuna = new Tuna(App.context);
                 this.cho = new tuna.Chorus();
                 this.cho.chorusLevel = this.synth.get('cho-chorusToggle');
+                // Overdrive bypassed: it was waveshaping every voice on the
+                // master bus at all times, adding audible distortion to
+                // transients (short plucks especially). Bypassed so the output
+                // stays clean; the node is left in the chain (passing signal
+                // through) so it can be re-enabled later if a drive control is
+                // ever exposed in the UI.
                 this.drive = new tuna.Overdrive({
                     outputGain: 0,
                     drive: 0.1,
                     curveAmount: 0.2,
                     algorithmIndex: 3,
-                    bypass: 0
+                    bypass: 1
                 });
 
                 this.masterGain = App.context.createGain();
@@ -204,24 +212,30 @@ define([
             },
 
             synthUpdateHandler: function(update) {
-                var param = Object.keys(update.changed)[0];
-                var value = update.changed[param];
+                // Apply EVERY changed parameter, not just the first. A single
+                // fader move changes one param, but RESET and patch loads set
+                // the whole patch at once; only reading changed[0] meant those
+                // updated a single parameter and silently dropped the rest —
+                // most visibly leaving portamentoTime (and unison) stuck at
+                // their previous values, so a glide survived Reset and ignored
+                // the PORTA fader.
+                _.each(update.changed, function(value, param) {
+                    if(param === 'prt-time') {
+                        this.portamentoTime = value * 3;
+                        return;
+                    }
+                    if(param === 'uni-enabled') {
+                        this.unisonEnabled = !!value;
+                        return;
+                    }
 
-                if(param === 'prt-time') {
-                    this.portamentoTime = value * 3;
-                    return;
-                }
-                if(param === 'uni-enabled') {
-                    this.unisonEnabled = !!value;
-                    return;
-                }
+                    var component = param.slice(0, 3);
+                    var attr = param.slice(4);
 
-                var component = param.slice(0, 3);
-                var attr = param.slice(4);
-
-                _.each(this.activeVoices, function(voice) {
-                    voice[component][attr] = value;
-                });
+                    _.each(this.activeVoices, function(voice) {
+                        voice[component][attr] = value;
+                    });
+                }, this);
             },
 
             handleReset: function() {

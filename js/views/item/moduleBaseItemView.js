@@ -25,7 +25,6 @@ define([
 
             initialize: function() {
                 var that = this;
-                var multiplier;
 
                 this.dragging = null;
                 this._viewId = _.uniqueId('moduleView');
@@ -119,7 +118,7 @@ define([
                 this.positions = {};
                 this.ui.switchKnob.each(function(i, knob) {
                     positionArray = [];
-                    multiplier = $(this).parent().height() / $(this).data().length;
+                    var multiplier = $(this).parent().height() / $(this).data().length;
                     for(var j = 0; j < $(this).data().length; j++) {
                         positionArray.push((j * multiplier));
                     }
@@ -200,8 +199,6 @@ define([
             },
 
             setupButtonState: function(el, value) {
-                var data;
-
                 el.toggleClass('pressed', !!value);
                 el.siblings('.led').toggleClass('led--lit', !!value);
                 el.data('value', value);
