@@ -91,14 +91,25 @@ define([
             selectMidi: function(e) {
                 var storedMappings;
                 var lastMidiDevice = window.localStorage.getItem('lastMidiDevice');
+                var device;
 
                 if(!e && lastMidiDevice && _.findWhere(this.inputs, {name: lastMidiDevice})) {
-                    this.activeDevice = _.findWhere(this.inputs, {name: lastMidiDevice});
+                    device = _.findWhere(this.inputs, {name: lastMidiDevice});
                     this.ui.select.val(lastMidiDevice);
                 } else {
-                    this.activeDevice = _.findWhere(this.inputs, {name: this.ui.select.val() });
-                    window.localStorage.setItem('lastMidiDevice', this.activeDevice.name);
+                    device = _.findWhere(this.inputs, {name: this.ui.select.val() });
                 }
+
+                // No matching device — e.g. the disabled "Select MIDI Input"
+                // placeholder is still the select's value (nothing chosen
+                // yet), or the previously-used device is no longer connected.
+                // Nothing to wire up.
+                if(!device) {
+                    return;
+                }
+
+                this.activeDevice = device;
+                window.localStorage.setItem('lastMidiDevice', this.activeDevice.name);
 
                 this.activeDevice.onmidimessage = this.handleMidi.bind(this);
 
