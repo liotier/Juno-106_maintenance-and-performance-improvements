@@ -1117,6 +1117,44 @@ hr {
   background-color: #800000;
 }
 
+.octave-shift {
+  position: absolute;
+  top: 0;
+  height: 100px;
+  width: 16px;
+  background-color: #33353C;
+  color: #CFCFCF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Audiowide;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  z-index: 1;
+  transition: background-color 0.1s ease-out, color 0.1s ease-out;
+}
+.octave-shift:hover {
+  background-color: #CC3300;
+  color: white;
+}
+
+.octave-shift--down {
+  left: -16px;
+  border-bottom-left-radius: 8px;
+}
+
+.octave-shift--up {
+  border-bottom-right-radius: 8px;
+}
+
+.octave-shift--disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
 .modal-info {
   list-style: none;
   padding: 0;
