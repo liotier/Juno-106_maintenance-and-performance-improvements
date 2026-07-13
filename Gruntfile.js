@@ -61,23 +61,6 @@ module.exports = function(grunt) {
 
         },
 
-        handlebars: {
-            options: {
-                namespace: 'Handlebars.templates',
-                processName: function(filePath) {
-                    var path = filePath.split('/');
-                    var name = path[path.length - 1];
-                    return name.slice(0, name.length - 4);
-                },
-                extension: 'hbs'
-            },
-            guide: {
-                files: {
-                    'style_guide/build/js/sg-templates.js': 'style_guide/templates/*.hbs'
-                }
-            }
-        },
-
         // Copy over any build artificats that need to belong in the dist
         // folder that are not managed by RequireJS or SASS.
         copy: {
@@ -197,11 +180,6 @@ module.exports = function(grunt) {
                 tasks: ['sass:dev', 'autoprefixer:dev'],
                 options: {
                 }
-            },
-
-            guide: {
-                files: ['css/**/*.scss', 'style_guide/**/*.hbs', 'style_guide/**/*.css'],
-                tasks: ['sass:dev', 'handlebars:guide']
             }
         },
 
@@ -239,8 +217,6 @@ module.exports = function(grunt) {
 
     // Tasks to run in local development environment.
     grunt.registerTask('build:dev', ['clean:dev', 'compile-handlebars:dev', 'sass:dev', 'autoprefixer:dev']);
-
-    grunt.registerTask('guide', ['sass:dev', 'handlebars:guide', 'connect']);
 
     grunt.registerTask('default', 'The default task', grunt.config.get('defaultTask'));
 };
