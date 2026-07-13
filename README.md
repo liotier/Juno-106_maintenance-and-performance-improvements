@@ -1,6 +1,6 @@
 # 106.js
 
-106.js is an emulation of the classic [Roland Juno-106 analog synthesizer](http://en.wikipedia.org/wiki/Roland_Juno-106).
+106.js is an emulation of the classic [Roland Juno-106 analog synthesizer](https://en.wikipedia.org/wiki/Roland_Juno-106).
 
 [You can play 106.js here](https://stevengoldberg.github.io/juno106/).
 
@@ -14,11 +14,13 @@ Minimum window size of 1024x768. A modern browser with Web Audio API support is 
 
 Key mappings are based on **physical key position** rather than letter, so the keyboard works correctly regardless of your layout (QWERTY, AZERTY, QWERTZ, Dvorak, etc.).
 
-Please note that due to a phenomenon known as [keyboard ghosting](http://www.microsoft.com/appliedsciences/antighostingexplained.mspx), certain simultaneous combinations of more than 2 keys will not register when held on the computer keyboard. This is a limitation of computer keyboard hardware, and not with 106.js.
+Please note that due to a phenomenon known as [keyboard ghosting](https://en.wikipedia.org/wiki/Key_rollover), certain simultaneous combinations of more than 2 keys will not register when held on the computer keyboard. This is a limitation of computer keyboard hardware, and not with 106.js.
 
-Click `Reset` at the top of the screen at any time to return 106.js to its initial state.
+The `<` and `>` buttons at the ends of the on-screen keyboard shift it one octave down or up, to a maximum of three octaves either way. Like a hardware octave switch, the shift applies to the notes you play next — notes already sounding keep their pitch.
 
-When you've found a sound that you like, click on the `PATCH NAME` text at the top of the screen to edit the name of your patch. Then click `SHARE` and click the icon to copy a special URL to your clipboard. Anyone who loads that URL will load your patch.
+106.js loads with a preset patch, so there's something to play right away. Click `Reset` at the top of the screen at any time to return every control to a blank initial patch — a single sawtooth with the filter open — a clean slate for building your own sound.
+
+When you've found a sound that you like, click the patch name at the top of the screen to edit it. Then click `Share patch` and copy the URL: anyone who loads that URL will load your patch.
 
 # MIDI
 
@@ -47,7 +49,7 @@ A triangle-wave oscillator heard indirectly through its effects on other paramet
 **DCO - Digitally Controlled Oscillator**
 Sound sources heard directly.
 
-* Range: Selects the keyboard octave (4', 8', 16'). Click a label to jump directly to that position.
+* Range: Selects the oscillator octave (4', 8', 16'). Click a label to jump directly to that position.
 * LFO: Depth of LFO modulation on oscillator pitch (vibrato).
 * PWM: In MAN mode, sets pulse wave width. In LFO mode, sets LFO modulation depth on pulse width.
 * LFO/MAN: Selects pulse-width modulation source. Click to toggle.
@@ -94,7 +96,7 @@ BBD-style chorus effect.
 
 # Technology
 
-106.js uses the [Web Audio API](http://webaudio.github.io/web-audio-api/) and [Web MIDI API](http://www.w3.org/TR/webmidi/), with [Backbone.Marionette](https://marionettejs.com) for the UI and effects from [tuna.js](https://github.com/Dinahmoe/tuna) by Dinahmoe.
+106.js uses the [Web Audio API](https://webaudio.github.io/web-audio-api/) and [Web MIDI API](https://www.w3.org/TR/webmidi/), with [Backbone.Marionette](https://marionettejs.com) for the UI and effects from [tuna.js](https://github.com/Dinahmoe/tuna) by Dinahmoe.
 
 # TO-DO
 
@@ -128,4 +130,14 @@ BBD-style chorus effect.
   * RC-like exponential envelope curves for more authentic Juno-106 character
   * Per-voice random detuning (±8 cents) for analogue warmth
   * Chorus: zero cross-channel feedback (authentic to Juno-106 BBD), corrected sweep rates
+  * Octave shift buttons (`<` / `>`) at the ends of the on-screen keyboard (±3 octaves)
+  * The default patch on page load is now a lush chorused pad instead of a bare sawtooth, so there's something more interesting to hear right away; `Reset` still returns to a blank init patch (single sawtooth, filter open) as before
+  * Refreshed header toolbar: icon buttons, editable patch-name field, `Share patch`
+  * Module labels realigned with their faders — they had drifted out of sync with a flexbox change elsewhere, to the point that in the ENV row the `R` (release) label sat over the `PORTA` slider
+  * `Reset` and patch loading now apply every parameter in the patch; previously only the first was applied, so e.g. portamento could be silently left engaged
+  * Removed an always-on overdrive effect that subtly distorted all output, most audibly on sharp transients
+  * Fixed a per-voice oscillator leak: a chorus detune oscillator was started per note but never stopped, leaking one running oscillator per note played
+  * Fixed chorus/phaser modulation depth (tuna.js) going stale when delay or rate changed after the effect was created
+  * Fixed a crash selecting a MIDI device when none was already remembered from a previous session
+  * Font Awesome is now self-hosted instead of loaded from a third-party CDN
 
