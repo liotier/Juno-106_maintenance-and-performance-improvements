@@ -31,8 +31,8 @@ module.exports = function(grunt) {
 
         // Remove artificats from a previous build.
         clean:  {
-            prod: ['_SpecRunner.html'],
-            dev: ['_SpecRunner.html', 'index.html']
+            prod: [],
+            dev: ['index.html']
         },
 
         // Build index.html from index.hbs
