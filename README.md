@@ -1,12 +1,8 @@
 # 106.js
 
-106.js is an emulation of the classic [Roland Juno-106 analog synthesizer](http://en.wikipedia.org/wiki/Roland_Juno-106).
+106.js is an emulation of the classic [Roland Juno-106 analog synthesizer](https://en.wikipedia.org/wiki/Roland_Juno-106).
 
 [You can play 106.js here](https://liotier.github.io/Juno-106_maintenance-and-performance-improvements/)
-
-# System Requirements
-
-Minimum window size of 1024x768. A modern browser with Web Audio API support is required (Chrome, Firefox, Safari, Edge).
 
 # How to play
 
@@ -14,11 +10,13 @@ Minimum window size of 1024x768. A modern browser with Web Audio API support is 
 
 Key mappings are based on **physical key position** rather than letter, so the keyboard works correctly regardless of your layout (QWERTY, AZERTY, QWERTZ, Dvorak, etc.).
 
-Please note that due to a phenomenon known as [keyboard ghosting](http://www.microsoft.com/appliedsciences/antighostingexplained.mspx), certain simultaneous combinations of more than 2 keys will not register when held on the computer keyboard. This is a limitation of computer keyboard hardware, and not with 106.js.
+Please note that due to a phenomenon known as [keyboard ghosting](https://en.wikipedia.org/wiki/Key_rollover), certain simultaneous combinations of more than 2 keys will not register when held on the computer keyboard. This is a limitation of computer keyboard hardware, and not with 106.js.
 
-Click `Reset` at the top of the screen at any time to return 106.js to its initial state.
+The `<` and `>` buttons at the ends of the on-screen keyboard shift it one octave down or up, to a maximum of three octaves either way. Like a hardware octave switch, the shift applies to the notes you play next — notes already sounding keep their pitch.
 
-When you've found a sound that you like, click on the `PATCH NAME` text at the top of the screen to edit the name of your patch. Then click `SHARE` and click the icon to copy a special URL to your clipboard. Anyone who loads that URL will load your patch.
+106.js loads with a lush chorused pad, so there is something pleasant to play right away. Click `Reset` at the top of the screen at any time to return every control to a blank init patch — a single raw sawtooth with the filter open, a clean slate for building your own sound.
+
+When you've found a sound that you like, click the patch name at the top of the screen to edit it. Then click `Share patch` and copy the URL: anyone who loads that URL will load your patch.
 
 # MIDI
 
@@ -51,7 +49,7 @@ A triangle-wave oscillator heard indirectly through its effects on other paramet
 **DCO - Digitally Controlled Oscillator**
 Sound sources heard directly.
 
-* Range: Selects the keyboard octave (4', 8', 16'). Click a label to jump directly to that position.
+* Range: Selects the oscillator octave (4', 8', 16'). Click a label to jump directly to that position.
 * LFO: Depth of LFO modulation on oscillator pitch (vibrato).
 * PWM: In MAN mode, sets pulse wave width. In LFO mode, sets LFO modulation depth on pulse width.
 * LFO/MAN: Selects pulse-width modulation source. Click to toggle.
@@ -102,13 +100,13 @@ BBD-style chorus effect.
 |---|---|
 | `master` | All improvements without Ouarpeggiator integration — for users who want the fixes and features without the Ouarpeggiator |
 | `master-but-with-ouarpeggiator-integration` | **Production branch** — deployed to GitHub Pages. All improvements plus Ouarpeggiator `postMessage` integration |
-| `upstream-pr` | Subset of improvements submitted as [PR #7](https://github.com/stevengoldberg/juno106/pull/7) to the original upstream |
+| `upstream-pr` | The improvements rebased onto upstream branding, prepared for submission as a pull request to the [original upstream](https://github.com/stevengoldberg/juno106) |
 
 GitHub Pages serves from `master-but-with-ouarpeggiator-integration`.
 
 # Technology
 
-106.js uses the [Web Audio API](http://webaudio.github.io/web-audio-api/) and [Web MIDI API](http://www.w3.org/TR/webmidi/), with [Backbone.Marionette](https://marionettejs.com) for the UI and effects from [tuna.js](https://github.com/Dinahmoe/tuna) by Dinahmoe.
+106.js uses the [Web Audio API](https://webaudio.github.io/web-audio-api/) and [Web MIDI API](https://www.w3.org/TR/webmidi/), with [Backbone.Marionette](https://marionettejs.com) for the UI and effects from [tuna.js](https://github.com/Dinahmoe/tuna) by Dinahmoe.
 
 # Changelog
 
@@ -132,3 +130,13 @@ GitHub Pages serves from `master-but-with-ouarpeggiator-integration`.
   * **Memory:** global event listeners namespaced and removed on view destroy
   * Share URL copy uses native [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) instead of Flash
   * Dependency fixes: CDN-pinned jQuery 2.x, Backbone 1.3, Underscore 1.9 for Marionette 2.4.1 compatibility
+  * Octave shift buttons (`<` / `>`) at the ends of the on-screen keyboard (±3 octaves)
+  * Lush chorused pad as the default patch on page load; `Reset` returns to a blank init patch
+  * Refreshed header toolbar: icon buttons, editable patch-name field, `Share patch`
+  * Social media link previews (Open Graph / Twitter Card metadata with screenshot)
+  * Module labels realigned with their faders (the misaligned ENV row made the "R" slider drive portamento)
+  * `Reset` and patch loads now apply every parameter — previously only the first was applied, so e.g. portamento could remain silently stuck on
+  * Removed an always-on overdrive that subtly distorted all output, most audibly on sharp transients
+  * Fixed a per-note oscillator leak: every note left a silent detune oscillator running forever, progressively consuming CPU
+  * Fixed chorus modulation depth going stale when delay or rate changed (tuna.js)
+  * Fixed a crash when selecting a MIDI device without a previously-remembered one
