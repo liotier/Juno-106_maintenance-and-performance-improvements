@@ -140,3 +140,11 @@ GitHub Pages serves from `master-but-with-ouarpeggiator-integration`.
   * Fixed a per-note oscillator leak: every note left a silent detune oscillator running forever, progressively consuming CPU
   * Fixed chorus modulation depth going stale when delay or rate changed (tuna.js)
   * Fixed a crash when selecting a MIDI device without a previously-remembered one
+
+# License
+
+The original 106.js code by Steve Goldberg carries no explicit license — [an upstream issue](https://github.com/stevengoldberg/juno106/issues/8) asks for one to be added. Until then it remains "all rights reserved" by default, with forking and viewing on GitHub permitted by the [GitHub Terms of Service](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#5-license-grant-to-other-users).
+
+This fork's own modifications are released under the [MIT License](https://opensource.org/license/mit). Bundled third-party components carry their own licenses: [tuna.js](https://github.com/Dinahmoe/tuna) (MIT) and the [Font Awesome 4](https://fontawesome.com/v4/) webfonts ([SIL OFL 1.1](https://openfontlicense.org/)).
+
+Juno-106 is a trademark of Roland Corporation; 106.js is an unaffiliated hobbyist emulation.
