@@ -27,7 +27,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stevengoldberg/juno106.git"
+    "url": "https://github.com/liotier/Juno-106_maintenance-and-performance-improvements.git"
   },
-  "author": "steve goldberg"
+  "author": "steve goldberg",
+  "contributors": [
+    "Jean-Marc Liotier"
+  ]
 }
